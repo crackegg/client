@@ -17,10 +17,10 @@
             <td>{{ data.data.name }}</td>
             <td>
                 <ul>
-                    <li v-for="(data2, index2) in data.data.users">{{ index2 }}</li>
+                    <li v-for="(data2, index2) in data.data.users" :key="index2">{{ index2 }}</li>
                 </ul>
             </td>
-            <td><router-link :to="'/lobby/'+data.roomId">Pilih Room</router-link></td>
+            <td><button @click="openRoom(data.roomId)">Pilih Room</button></td>
         </tr>
     </table>
   </div>
@@ -62,6 +62,13 @@
                     }
                 }).key;
             },
+            openRoom (roomId) {
+                firebase.database().ref(`Rooms/${roomId}/users/${localStorage.getItem('username')}`).set({
+                    score: 0,
+                    status: false
+                })
+                this.$router.push(`/lobby/${roomId}`)
+            }
         },
     }
 </script>
