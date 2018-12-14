@@ -7,26 +7,26 @@
     </form><br>
     <table align="center" border="1px solid" cellpadding="5">
         <tr>
-            <td>Id</td>
             <td>Nama Room</td>
             <td>User Aktif</td>
             <td>Action</td>
         </tr>
-        <tr v-for="(data, index) in rooms" :key="index">
-            <td>{{ data.roomId }}</td>
-            <td>{{ data.data.name }}</td>
+        <tr v-for="(data, i) in rooms" :key="i">
+            <td>{{ data.name }}</td>
             <td>
                 <ul>
-                    <li v-for="(data2, index2) in data.data.users" :key="index2">{{ index2 }}</li>
+                    <li v-for="(data2, index2) in data.users" :key="index2">{{ index2 }}</li>
                 </ul>
             </td>
-            <td><button @click="openRoom(data.roomId)">Pilih Room</button></td>
+            <td><button @click="openRoom(i)">Pilih Room</button></td>
         </tr>
     </table>
   </div>
 </template>
 
 <script>
+
+
     export default {
         name: 'lobby',
         data() {
@@ -36,38 +36,40 @@
             };
         },
         mounted() {
-            var starCountRef = firebase.database().ref('Rooms/');
+            var starCountRef = firebase.database().ref('Rooms2/');
             starCountRef.on('value', snapshot => {
-                let obj = snapshot.val();
-                let objArray = [];
-                for(let i in obj) {
-                    let dapet = {
-                        roomId: i,
-                        data: obj[i]
-                    };
-                    objArray.push(dapet);
-                }
-                this.rooms = objArray;
+                this.rooms = snapshot.val()
             });
+            // this.playSong()
+        },
+        created () {
+
         },
         methods: {
             saveRoom() {
-                firebase.database().ref('Rooms/').push({
+                const ref = firebase.database().ref('Rooms2/').push()
+                const key = ref.key
+                ref.set({
                     name: this.name,
-                }, error => {
-                    if (error) {
-                        console.log(error)
-                    } else {
-                        console.log('sukses')
-                    }
-                }).key;
+                })
+                .then(data => {
+                    this.openRoom(key)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+
             },
             openRoom (roomId) {
-                firebase.database().ref(`Rooms/${roomId}/users/${localStorage.getItem('username')}`).set({
+                console.log(roomId)
+                firebase.database().ref(`Rooms2/${roomId}/users/${localStorage.getItem('username')}`).set({
                     score: 0,
-                    status: false
+                    status: false,
                 })
                 this.$router.push(`/lobby/${roomId}`)
+            },
+            playSong () {
+
             }
         },
     }
