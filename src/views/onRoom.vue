@@ -3,24 +3,23 @@
         <b-card img-src="https://placekitten.com/1000/300"
                 img-alt="Card image"
                 img-top
-                style="max-width: 25rem;" v-for="(user, index) in users" :key="index">
+                style="max-width: 25rem;" v-for="(user, i) in users" :key="i">
             <p class="card-text">
-               Player {{index + 1}}
                <br>
                <br>
-               {{user.username}}
+               {{i}}
             </p>
               <b-card-body>
-            <a href="#"
-               class="card-link">Ready</a>
         </b-card-body>
         </b-card>
-        <b-button variant="success" @click="play">PLAY</b-button>
+                    <a href="#"
+               class="card-link" @click="ready">Ready</a>
 </div>
 </template>
 
 <script>
 export default {
+    name: 'on-room',
     data () {
         return {
             users: []
@@ -28,27 +27,29 @@ export default {
     },
     methods: {
         getRoom () {
-            // firebase.database().ref(`rooms/${this.$route.params.id}`);
-            var listenRoomId = firebase.database().ref(`Rooms/${this.$route.params.id}`)
+            var listenRoomId = firebase.database().ref(`Rooms2/${this.$route.params.id}`)
             listenRoomId.on('value', (payload) => {
-                // console.log(payload.val())
-            let data = payload.val()
-            // console.log(data.users)
-                let arrData = []
+                let data = payload.val()
+                this.users = data.users
+                let check = true
                 for(let i in data.users) {
-                    console.log(data.users)
-                    let obj = {
-                        username: i,
-                        score: i.score
+                    if(data.users[i].status === false) {
+                        check = false
                     }
-                arrData.push(obj)
                 }
-                this.users = arrData
-                // console.log(arrData)
+                if(check) {
+                    this.$router.push(`/${this.$route.params.id}/play`)
+                }
             });
         },
         play () {
-            this.$route.push(`${this.$route.params.id}/play`)
+            this.$router.push(`/${this.$route.params.id}/play`)
+        },
+        ready () {
+            let username = localStorage.getItem('username')
+            firebase.database().ref(`Rooms2/${this.$route.params.id}/users/${username}`).set({
+                status: true
+            })
         }
     },
     mounted () {

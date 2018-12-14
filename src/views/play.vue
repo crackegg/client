@@ -6,8 +6,7 @@
         </div>
         <div v-else>
             <h1>{{ this.winner }} is win the game</h1>
-            <button>back to lobby</button>
-            <button>back to room</button>
+            <button @click="goLobby">back to lobby</button>
         </div>
     </div>
 </template>
@@ -16,6 +15,7 @@
 import FartMp3 from '@/assets/fart.mp3'
 import WinMp3 from '@/assets/win.mp3'
 import LoseMp3 from '@/assets/lose.mp3'
+import SongMp3 from '@/assets/bgmtrue.mp3'
 
 export default {
     name: 'play',
@@ -37,7 +37,7 @@ export default {
                 this.classs = ''
             }, 250);
             this.points += 1
-            firebase.database().ref(`rooms/${this.$route.params.id}/users/${this.username}`).update({
+            firebase.database().ref(`Rooms2/${this.$route.params.id}/users/${this.username}`).update({
                 score: this.points
             });
         },
@@ -45,7 +45,7 @@ export default {
                 this.username = localStorage.getItem('username')
                 this.classs = 'bounce-in-top'
                 this.win = false
-                var starCountRef = firebase.database().ref(`rooms/${this.$route.params.id}/users`);
+                var starCountRef = firebase.database().ref(`Rooms2/${this.$route.params.id}/users`);
                 starCountRef.on('value', (snapshot) => {
                 let data = snapshot.val()
                 for(let index in data) {
@@ -58,16 +58,22 @@ export default {
                         } else {
                                 new Audio(LoseMp3).play()
                         }
-                        firebase.database().ref(`rooms/${this.$route.params.id}/users/${this.username}`).update({
+                        firebase.database().ref(`Rooms2/${this.$route.params.id}/users/${this.username}`).update({
                                 score: 0
                         });
                         }
                 }
                 });
+        },
+        goLobby () {
+                firebase.database().ref(`Rooms2/${this.$route.params.id}/users/${localStorage.getItem('username')}`).remove()
+                this.$router.push('/lobby')
         }
     },
     mounted () {
             this.setGame()
+        let song = new Audio(SongMp3)
+                song.play()
     }
 }
 </script>
