@@ -17,7 +17,7 @@
             <td>{{ data.data.name }}</td>
             <td>
                 <ul>
-                    <li></li>
+                    <li v-for="(data2, index2) in data.data.users">{{ index2 }}</li>
                 </ul>
             </td>
             <td><router-link :to="'/lobby/'+data.roomId">Pilih Room</router-link></td>
