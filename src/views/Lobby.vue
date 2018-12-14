@@ -1,0 +1,67 @@
+<template>
+  <div class="about">
+    <h1>Lobby Room</h1>
+    <form @submit.prevent="saveRoom">
+        <input type="text" placeholder="Enter Name Room" v-model="name" />
+        <button>Save</button>
+    </form><br>
+    <table align="center" border="1px solid" cellpadding="5">
+        <tr>
+            <td>Id</td>
+            <td>Nama Room</td>
+            <td>User Aktif</td>
+            <td>Action</td>
+        </tr>
+        <tr v-for="(data, index) in rooms" :key="index">
+            <td>{{ data.roomId }}</td>
+            <td>{{ data.data.name }}</td>
+            <td>
+                <ul>
+                    <li></li>
+                </ul>
+            </td>
+            <td><router-link :to="'/lobby/'+data.roomId">Pilih Room</router-link></td>
+        </tr>
+    </table>
+  </div>
+</template>
+
+<script>
+    export default {
+        name: 'lobby',
+        data() {
+            return {
+                rooms: [],
+                name: '',
+            };
+        },
+        mounted() {
+            var starCountRef = firebase.database().ref('Rooms/');
+            starCountRef.on('value', snapshot => {
+                let obj = snapshot.val();
+                let objArray = [];
+                for(let i in obj) {
+                    let dapet = {
+                        roomId: i,
+                        data: obj[i]
+                    };
+                    objArray.push(dapet);
+                }
+                this.rooms = objArray;
+            });
+        },
+        methods: {
+            saveRoom() {
+                firebase.database().ref('Rooms/').push({
+                    name: this.name,
+                }, error => {
+                    if (error) {
+                        console.log(error)
+                    } else {
+                        console.log('sukses')
+                    }
+                }).key;
+            },
+        },
+    }
+</script>
