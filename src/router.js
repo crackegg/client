@@ -31,12 +31,12 @@ export default new Router({
     {
       path: '/lobby/:id',
       name: 'onRoom',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "onRoom" */ './views/onRoom.vue')
+    }, 
+    {
+      path: '/:id/play',
+      name: 'play',
+      component: () => import(/* webpackChunkName: "play" */ '@/views/play.vue')
     }
-  ]
-  
-  
+  ] 
 })
