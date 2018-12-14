@@ -25,7 +25,7 @@ export default {
             for(let i in obj) {
                 let dapet = obj[i];
                 if(dapet.username === this.username && dapet.password === this.password) {
-                    localStorage.setItem('userAktif', dapet.username);
+                    localStorage.setItem('username', dapet.username);
                     this.$router.push('/lobby');
                 }
             }
