@@ -29,7 +29,7 @@ export default {
     methods: {
         getRoom () {
             // firebase.database().ref(`rooms/${this.$route.params.id}`);
-            var listenRoomId = firebase.database().ref(`Rooms/${this.route.params.id}`)
+            var listenRoomId = firebase.database().ref(`Rooms/${this.$route.params.id}`)
             listenRoomId.on('value', (payload) => {
                 // console.log(payload.val())
             let data = payload.val()
@@ -49,21 +49,10 @@ export default {
         },
         play () {
             this.$route.push(`${this.$route.params.id}/play`)
-        },
-        getPlayer () {
-            let username = localStorage.getItem('userAktif')
-            firebase.database().ref(`Rooms/${this.$route.params.id}/users`).set({
-                [username]: {
-                    score:0
-                }
-            })
         }
-        
-
     },
     mounted () {
         this.getRoom()
-        this.getPlayer()
     }
 }
 </script>
