@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>client</title>
+  </head>
+  <body class="color-change-5x">
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDxh7fLYk5nlUbjR1OUcducIvkHIyiqXvM",
+            authDomain: "new-egg-1b7b6.firebaseapp.com",
+            databaseURL: "https://new-egg-1b7b6.firebaseio.com",
+            projectId: "new-egg-1b7b6",
+            storageBucket: "new-egg-1b7b6.appspot.com",
+            messagingSenderId: "965091850157"
+        };
+        firebase.initializeApp(config);
+    </script>
+  </body>
+</html>
+
+<style>
+.color-change-5x {
+	-webkit-animation: color-change-5x 8s linear infinite alternate both;
+	        animation: color-change-5x 8s linear infinite alternate both;
+}
+
+ @-webkit-keyframes color-change-5x {
+  0% {
+    background: #19dcea;
+  }
+  25% {
+    background: #b22cff;
+  }
+  50% {
+    background: #ea2222;
+  }
+  75% {
+    background: #f5be10;
+  }
+  100% {
+    background: #3bd80d;
+  }
+}
+@keyframes color-change-5x {
+  0% {
+    background: #19dcea;
+  }
+  25% {
+    background: #b22cff;
+  }
+  50% {
+    background: #ea2222;
+  }
+  75% {
+    background: #f5be10;
+  }
+  100% {
+    background: #3bd80d;
+  }
+}
+
+
+</style>
